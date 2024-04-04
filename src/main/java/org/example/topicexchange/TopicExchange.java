@@ -58,6 +58,26 @@ public class TopicExchange {
 
     }
 
+    public static void main(String[] args) throws IOException, TimeoutException {
+        TopicExchange.declareQueue();
+        TopicExchange.declareExchange();
+        TopicExchange.declareBindings();
+
+        Thread publish = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    TopicExchange.publishMessage();
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        publish.start();
+    }
 
 
 }
