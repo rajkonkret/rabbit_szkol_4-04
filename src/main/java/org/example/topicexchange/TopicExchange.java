@@ -16,7 +16,7 @@ public class TopicExchange {
     }
 
 
-    public static void DeclareQueue() throws IOException, TimeoutException {
+    public static void declareQueue() throws IOException, TimeoutException {
         Channel channel = ConnectionManager.getConnection().createChannel();
 
         // tworzymy kolejki
