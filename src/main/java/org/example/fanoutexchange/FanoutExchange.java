@@ -55,4 +55,44 @@ public class FanoutExchange {
                     System.out.println(consumerTag);
                 });
     }
+
+    public static void publishMessage() throws IOException, TimeoutException {
+        Channel channel = ConnectionManager.getConnection().createChannel();
+
+        String message = "Main Power is ON";
+        channel.basicPublish("my-fanout-exchange", "", null, message.getBytes());
+
+        channel.close();
+    }
+
+    public static void main(String[] args) throws IOException, TimeoutException {
+        FanoutExchange.declareExchange();
+        FanoutExchange.declareBindings();
+
+        Thread subscribe = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    FanoutExchange.subscribeMessages();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Thread publish = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    FanoutExchange.publishMessage();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        subscribe.start();
+        publish.start();
+    }
 }
