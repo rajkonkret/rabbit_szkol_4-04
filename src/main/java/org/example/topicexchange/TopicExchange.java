@@ -20,9 +20,9 @@ public class TopicExchange {
         Channel channel = ConnectionManager.getConnection().createChannel();
 
         // tworzymy kolejki
-        channel.queueDeclare("HealthQ", true, false, false,null);
-        channel.queueDeclare("SportsQ", true, false, false,null);
-        channel.queueDeclare("EducationQ", true, false, false,null);
+        channel.queueDeclare("HealthQ", true, false, false, null);
+        channel.queueDeclare("SportsQ", true, false, false, null);
+        channel.queueDeclare("EducationQ", true, false, false, null);
 
         channel.close();
 
@@ -38,4 +38,26 @@ public class TopicExchange {
 
         channel.close();
     }
+
+    public static void publishMessage() throws IOException, TimeoutException {
+        Channel channel = ConnectionManager.getConnection().createChannel();
+
+        String message = "Drink a lot of Water and stay Healthy";
+        channel.basicPublish("my-topic-exchange", "health.education", null, message.getBytes());
+
+        message = "Learn somthing new everyday";
+        channel.basicPublish("my-topic-exchange", "education", null, message.getBytes());
+
+        message = "Stay fit in Mind and Body";
+        channel.basicPublish("my-topic-exchange", "education.health", null, message.getBytes());
+
+        message = "Just do it";
+        channel.basicPublish("my-topic-exchange", "sports.sports", null, message.getBytes());
+
+        channel.close();
+
+    }
+
+
+
 }
