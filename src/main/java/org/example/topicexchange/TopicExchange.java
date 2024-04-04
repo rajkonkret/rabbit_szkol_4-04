@@ -27,4 +27,15 @@ public class TopicExchange {
         channel.close();
 
     }
+
+    public static void declareBindings() throws IOException, TimeoutException {
+        Channel channel = ConnectionManager.getConnection().createChannel();
+
+        // tworzenie linków do kolejek (routing pattern)
+        channel.queueBind("HealthQ", "my-topic-exchange", "health.*");
+        channel.queueBind("SportsQ", "my-topic-exchange", "#.sports.*");
+        channel.queueBind("EducationQ", "my-topic-exchange", "#.education");
+
+        channel.close();
+    }
 }
