@@ -31,7 +31,7 @@ public class FanoutExchange {
         channel.basicConsume("LightQ", true, (
                         (consumerTag, message) -> {
                             System.out.println(consumerTag);
-                            System.out.println("LightQ" + new String(message.getBody()));
+                            System.out.println("LightQ: " + new String(message.getBody()));
                         }),
                 consumerTag -> {
                     System.out.println(consumerTag);
@@ -40,7 +40,7 @@ public class FanoutExchange {
         channel.basicConsume("ACQ", true, (
                         (consumerTag, message) -> {
                             System.out.println(consumerTag);
-                            System.out.println("ACQ" + new String(message.getBody()));
+                            System.out.println("ACQ: " + new String(message.getBody()));
                         }),
                 consumerTag -> {
                     System.out.println(consumerTag);
@@ -49,7 +49,7 @@ public class FanoutExchange {
         channel.basicConsume("MobileQ", true, (
                         (consumerTag, message) -> {
                             System.out.println(consumerTag);
-                            System.out.println("MobileQ" + new String(message.getBody()));
+                            System.out.println("MobileQ: " + new String(message.getBody()));
                         }),
                 consumerTag -> {
                     System.out.println(consumerTag);
