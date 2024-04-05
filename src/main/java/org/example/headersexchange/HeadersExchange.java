@@ -109,6 +109,13 @@ public class HeadersExchange {
                 .build();
         channel.basicPublish("my-header-exchange", "", properties, message.getBytes());
 
+        message = "Headers exchange example 2";
+        Map<String, Object> headerMap2 = new HashMap<>();
+        headerMap2.put("h2", "Header2");
+        properties = new BasicProperties().builder()
+                        .headers(headerMap2).build();
+        channel.basicPublish("my-header-exchange","",properties, message.getBytes());
+
         channel.close();
     }
 
