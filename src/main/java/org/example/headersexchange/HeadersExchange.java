@@ -142,11 +142,19 @@ public class HeadersExchange {
                 .build();
         channel.basicPublish("my-header-exchange", "", properties, message.getBytes());
 
-        message = "Headers exchange exaple 4 Vercom";
+        message = "Headers exchange example 4 Vercom";
         Map<String, Object> headerMap4 = new HashMap<>();
         headerMap4.put("h3", "Header3");
         properties = new BasicProperties().builder()
                 .headers(headerMap4)
+                .build();
+        channel.basicPublish("my-header-exchange", "", properties, message.getBytes());
+
+        message = "Headers exchange example 5";
+        Map<String, Object> headerMap5 = new HashMap<>();
+        headerMap5.put("h2", "Header2");
+        properties = new BasicProperties().builder()
+                .headers(headerMap5)
                 .build();
         channel.basicPublish("my-header-exchange", "", properties, message.getBytes());
 
