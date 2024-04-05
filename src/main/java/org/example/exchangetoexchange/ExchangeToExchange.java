@@ -56,8 +56,10 @@ public class ExchangeToExchange {
     public static void publishMessage() throws IOException, TimeoutException {
         Channel channel = ConnectionManager.getConnection().createChannel();
 
-        String message = "Direct message - Turn on the Home Appliance";
-        channel.basicPublish("home-direct-exchange", "homeAppliance", null, message.getBytes());
+//        String message = "Direct message - Turn on the Home Appliance";
+        String message = "Direct message - Turn on the personal device";
+//        channel.basicPublish("home-direct-exchange", "homeAppliance", null, message.getBytes());
+        channel.basicPublish("home-direct-exchange", "personalDevice", null, message.getBytes());
 
         channel.close();
     }
