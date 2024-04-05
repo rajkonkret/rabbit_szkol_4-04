@@ -26,6 +26,7 @@ public class HeadersExchange {
         channel.queueDeclare("HealthQ", true, false, false, null);
         channel.queueDeclare("SportsQ", true, false, false, null);
         channel.queueDeclare("EducationQ", true, false, false, null);
+        channel.queueDeclare("VercomQ", true, false, false, null);
 
         channel.close();
     }
@@ -52,6 +53,11 @@ public class HeadersExchange {
         educationArgs.put("h1", "Header1");
         educationArgs.put("h2", "Header2");
         channel.queueBind("EducationQ", "my-header-exchange", "", educationArgs);
+
+        Map<String, Object> vercomArgs = new HashMap<>();
+        vercomArgs.put("x-match", "any");
+        vercomArgs.put("h3", "Header3");
+        channel.queueBind("VercomQ", "my-header-exchange", "", vercomArgs);
 
         channel.close();
     }
@@ -95,6 +101,18 @@ public class HeadersExchange {
                 consumerTag -> {
                     System.out.println(consumerTag);
                 });
+
+        channel.basicConsume("VercomQ", true,
+                ((consumerTag, message) -> {
+                    System.out.println("\n\n======== Vercom Queue =========");
+                    System.out.println(consumerTag);
+                    System.out.println("VercomQ" + new String(message.getBody()));
+
+                    System.out.println(message.getEnvelope());
+                }),
+                consumerTag -> {
+                    System.out.println(consumerTag);
+                });
     }
 
     public static void publishMessage() throws IOException, TimeoutException {
@@ -113,8 +131,24 @@ public class HeadersExchange {
         Map<String, Object> headerMap2 = new HashMap<>();
         headerMap2.put("h2", "Header2");
         properties = new BasicProperties().builder()
-                        .headers(headerMap2).build();
-        channel.basicPublish("my-header-exchange","",properties, message.getBytes());
+                .headers(headerMap2).build();
+        channel.basicPublish("my-header-exchange", "", properties, message.getBytes());
+
+        message = "Headers exchange example 3";
+        Map<String, Object> headerMap3 = new HashMap<>();
+        headerMap3.put("h3", "Header3");
+        properties = new BasicProperties().builder()
+                .headers(headerMap3)
+                .build();
+        channel.basicPublish("my-header-exchange", "", properties, message.getBytes());
+
+        message = "Headers exchange exaple 4 Vercom";
+        Map<String, Object> headerMap4 = new HashMap<>();
+        headerMap4.put("h3", "Header3");
+        properties = new BasicProperties().builder()
+                .headers(headerMap4)
+                .build();
+        channel.basicPublish("my-header-exchange", "", properties, message.getBytes());
 
         channel.close();
     }
